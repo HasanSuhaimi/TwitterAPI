@@ -36,10 +36,10 @@ search_headers = {
 }
 
 #the search_params specify the data request parameter
-search_params = {'query': '#Metoo lang:en'
-                 #'maxResults': '500',
-                 #'fromDate': '201708010000',
-                 #'toDate': '201812310000',
+search_params = {'query': '#Metoo lang:en place_country:us',
+                 'maxResults': '100',
+                 'fromDate': '201703010000',
+                 'toDate': '201812310000',
                  }
 
 search_url = '{}1.1/tweets/search/fullarchive/tutorial.json'.format(base_url)
@@ -52,7 +52,11 @@ print(search_resp.status_code)
 tweet_data = search_resp.json()
 # ... tweet_data
 
-#getting the value from the json response
+#pull out 100 Tweets from Sun Dec 30 23:59:56 +0000 2018 to Sun Dec 30 00:39:11 +0000 2018
+for val in tweet_data['results']:
+    print(val)
 
-for key,val in tweet_data['requestParameters'].items():
-    print(key, " : ", val)
+print('')
+
+#get the next parameter for the next query
+print(tweet_data['next'])
