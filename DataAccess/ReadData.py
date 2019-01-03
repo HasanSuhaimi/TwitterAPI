@@ -1,7 +1,7 @@
 ##ur Oath1 keys, remember to update for every push, better yet do some credential handling
 
-client_key = 'IM5rJesuLG3qMyn4B72Cn9jrn'
-client_secret = 'E5xAx5Ap5elnn26d8Ub8x7l8zJrvA0jHz1WIFM8q0suXCcTgXd'
+client_key = '0urnBXZHwCpO1dEEgOnrjKM6P'
+client_secret = 'AigXM1RPgoYaSchAijIPoQ0QPgH0jnXaQaZ50fUUG808oxndqg'
 
 import base64
 
@@ -39,7 +39,7 @@ search_headers = {
 search_params = {'query': '#Metoo lang:en place_country:us',
                  'maxResults': '100',
                  'fromDate': '201703010000',
-                 'toDate': '201812310000',
+                 'toDate': '201803010000',
                  }
 
 search_url = '{}1.1/tweets/search/fullarchive/tutorial.json'.format(base_url)
@@ -52,11 +52,26 @@ print(search_resp.status_code)
 tweet_data = search_resp.json()
 # ... tweet_data
 
-#pull out 100 Tweets from Sun Dec 30 23:59:56 +0000 2018 to Sun Dec 30 00:39:11 +0000 2018
+
+import ast
+import json
+
+#storing the data in dataset text file
+dataset = open("Dataset.txt",'w')
+
+#pull out 100 Tweets from Wed Feb 28 23:58:46 +0000 2018 to Wed Feb 28 13:07:51 +0000 2018
 for val in tweet_data['results']:
-    print(val)
+    val1 = json.dumps(val)
+    dataset.write(val1 + '\n')
 
-print('')
+#close the text file
+dataset.close()
 
-#get the next parameter for the next query
-print(tweet_data['next'])
+#storing the key in keyset text file
+keyset = open("Keyset.txt",'w')
+
+#get the next parameter for the next list
+keyset.write(tweet_data['next']+'\n')
+
+#close the text file
+keyset.close()
