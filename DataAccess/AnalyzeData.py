@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 #storing the variables for plotting
 dates_list = []
 rtwt_count = []
+idA_list = []
+idB_list = []
 num_twt = 0
 num_links = 0
 
@@ -33,27 +35,33 @@ with open("fullOct18.txt", 'r') as dataset:
             #extract the rtwt count for plotting value (y)
             rtwt_count.append(line_dict['retweet_count'])
 
-            #check if key exist
+            #check if link exist
             if 'quoted_status' in line_dict:
                 #count the number of links
                 num_links = num_links + 1
-
-                print("Quoted from:", "{ " ,line_dict['quoted_status']['created_at'],
-                      " rtwt_count: ",line_dict['quoted_status']['retweet_count'],
-                      " fav_count: ",line_dict['quoted_status']['favorite_count'],
-                      " reply_count: ",line_dict['quoted_status']['reply_count'],
-                      " user_id:",line_dict['quoted_status']['user']["id"], " }")
-                print("*****")
-                print("Ori id: ",line_dict['created_at']," rtwt_count: ",
-                      line_dict['retweet_count']," fav_count: ",line_dict['favorite_count'],
-                      " reply_count: ",line_dict['reply_count'],
-                      " user_id: ",line_dict['user']["id"])
-
-                print("")
+                
+                idA = line_dict['quoted_status']['user']["id"]
+                idA_list.append(str(idA))
+                
+                idB = line_dict['user']["id"]
+                idB_list.append(str(idB))
         else:
             break
 
     # close the text file
+    dataset.close()
+
+############################################################################################
+#this function takes a list of String of vals and write it in text file
+def writeText(list1,path):
+    dataset = open(path,'w')
+
+    #pull out 100 Tweets from Wed Feb 28 23:58:46 +0000 2018 to Wed Feb 28 13:07:51 +0000 2018
+    for val in list1:
+
+        dataset.write('"'+val+'", ')
+
+    #close the text file
     dataset.close()
 
 ############################################################################################
@@ -87,4 +95,7 @@ def getDate(date_list) :
 
 print(num_links)
 
+#store for future use
+writeText(idA_list,"idA.txt")
+writeText(idB_list,"idB.txt")
 
