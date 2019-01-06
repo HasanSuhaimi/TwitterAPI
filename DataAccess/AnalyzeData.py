@@ -1,5 +1,6 @@
 import yaml
 import datetime
+import networkx as nx
 import matplotlib.pyplot as plt
 
 #storing the variables for plotting
@@ -10,7 +11,9 @@ idB_list = []
 num_twt = 0
 num_links = 0
 
-# open for reading
+
+############################################################################################
+# open dataset for reading
 with open("fullOct18.txt", 'r') as dataset:
 
     # split every string ended with '\n' into a list of a string ['*']
@@ -65,7 +68,6 @@ def writeText(list1,path):
     dataset.close()
 
 ############################################################################################
-
 #this function takes a list of String of date in the format "Wed Aug 27 13:08:45 +0000 2008"
 def getDate(date_list) :
 
@@ -92,10 +94,50 @@ def getDate(date_list) :
 
     return xlist
 
+############################################################################################
+#this function takes id, idList, the current element position of idList and return status string
+def checkId(id, idList, linkNum):
 
-print(num_links)
+    for x in range(linkNum) :
 
-#store for future use
-writeText(idA_list,"idA.txt")
-writeText(idB_list,"idB.txt")
+        if x == 0 :
+            print('')
 
+        if id == idList[x] :
+            print(id)
+            print(idList[x])
+            return 'existed'
+
+    return 'none'
+
+############################################################################################
+#plotting the Network function
+def plotNetwork(listA,listB,NumLinks):
+
+    nodeID = 0
+    G = nx.Graph()
+
+    for x in range(NumLinks):
+
+        # create nodes from listB first
+        # check wheter the node B created exist
+        thisB_node = checkId(listB[x], listB, x)
+        if thisB_node == 'existed':
+            print('existed')
+            continue;
+        if thisB_node == 'none':
+            #create the node with 'id' and id = nodeID
+            G.add_node(listB[x],id = nodeID)
+            # increase nodeID
+            nodeID = nodeID + 1
+
+            #getting the dict of every node id attributes
+            idDict = nx.get_node_attributes(G,'id')
+            print(idDict)
+            #get the individual id associated with stringid
+            # print(idDict[listB[x]])
+
+
+############################################################################################
+
+plotNetwork(idA_list,idB_list,num_links)
