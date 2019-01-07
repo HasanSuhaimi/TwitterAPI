@@ -118,14 +118,14 @@ def plotNetwork(listA, listB):
     fullid_list = listA + listB
     itter = len(fullid_list)
 
-    G = nx.Graph()
+    G = nx.DiGraph()
 
     for x in range(itter):
 
         print("iteration: ", x)
 
         # create nodes
-        G.add_node(fullid_list[x], id=nodeID)
+        G.add_node(fullid_list[x], id = fullid_list[x])
         nodeID = nodeID + 1
         print(G.number_of_nodes())
         idDict = nx.get_node_attributes(G, 'id')
@@ -149,30 +149,4 @@ G = plotNetwork(idA_list, idB_list)
 setEdges(G,num_links,idA_list,idB_list)
 print(G.edges())
 
-G.add_edges_from(G.edges())
-
-import matplotlib.pyplot as plt
-from matplotlib import pylab
-
-def save_graph(graph,file_name):
-    #initialze Figure
-    plt.figure(num=None, figsize=(20, 20), dpi=80)
-    plt.axis('off')
-    fig = plt.figure(1)
-    pos = nx.spring_layout(graph)
-    nx.draw_networkx_nodes(graph,pos)
-    nx.draw_networkx_edges(graph,pos)
-    nx.draw_networkx_labels(graph,pos)
-
-    cut = 1.00
-    xmax = cut * max(xx for xx, yy in pos.values())
-    ymax = cut * max(yy for xx, yy in pos.values())
-    plt.xlim(0, xmax)
-    plt.ylim(0, ymax)
-
-    plt.savefig(file_name,bbox_inches="tight")
-    pylab.close()
-
-
-#Assuming that the graph g has nodes and edges entered
-save_graph(G,"my_graph.png")
+nx.write_gexf(G, "file.gexf", version="1.2draft")
