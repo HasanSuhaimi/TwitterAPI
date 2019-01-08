@@ -149,4 +149,5 @@ G = plotNetwork(idA_list, idB_list)
 setEdges(G,num_links,idA_list,idB_list)
 print(G.edges())
 
+#save the network as .gexf file and read it with Gephi tool
 nx.write_gexf(G, "file.gexf", version="1.2draft")
